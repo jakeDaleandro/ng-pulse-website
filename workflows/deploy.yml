@@ -1,0 +1,24 @@
+name: Deploy to UCF Maverick
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Deploy files to maverick
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.MAVERICK_HOST }}
+          username: ${{ secrets.MAVERICK_USER }}
+          key: ${{ secrets.MAVERICK_KEY }}
+          source: "index.html,*.pdf,*.png,*.jpg"
+          target: /var/www/html/seniordesign/fa2026sp2027/g12
+          overwrite: true
