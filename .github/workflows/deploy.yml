@@ -10,15 +10,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.MAVERICK_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H 10.173.204.134 >> ~/.ssh/known_hosts
+
       - name: Deploy files to maverick
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.MAVERICK_HOST }}
-          username: ${{ secrets.MAVERICK_USER }}
-          key: ${{ secrets.MAVERICK_KEY }}
-          source: "index.html,*.pdf,*.png,*.jpg"
-          target: /var/www/html/seniordesign/fa2026sp2027/g12
-          overwrite: true
+        run: |
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+            index.html \
+            ${{ secrets.MAVERICK_USER }}@10.173.204.134:/var/www/html/seniordesign/fa2026sp2027/g12/
+
+      - name: Deploy PDFs if present
+        run: |
+          for f in *.pdf; do
+            [ -f "$f" ] || continue
+            scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+              "$f" \
+              ${{ secrets.MAVERICK_USER }}@10.173.204.134:/var/www/html/seniordesign/fa2026sp2027/g12/
+          done
+
+      - name: Deploy images if present
+        run: |
+          for f in *.png *.jpg *.gif; do
+            [ -f "$f" ] || continue
+            scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+              "$f" \
+              ${{ secrets.MAVERICK_USER }}@10.173.204.134:/var/www/html/seniordesign/fa2026sp2027/g12/
+          done
