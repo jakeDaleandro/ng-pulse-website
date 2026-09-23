@@ -14,9 +14,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up SSH key
+        env:
+          MAVERICK_KEY: ${{ secrets.MAVERICK_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.MAVERICK_KEY }}" > ~/.ssh/deploy_key
+          printf '%s\n' "$MAVERICK_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H 10.173.204.134 >> ~/.ssh/known_hosts
 
