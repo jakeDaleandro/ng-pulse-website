@@ -93,6 +93,8 @@ nav{
 .hero-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .hero h1{margin-bottom:10px}
+.hero-title{display:flex;align-items:center;gap:.3em}
+.hero-title img{height:1.4em;width:auto}
 .hero-sub{
   font-size:clamp(1rem,2vw,1.2rem);font-weight:300;
   color:rgba(255,255,255,.6);max-width:600px;margin:18px 0 0;line-height:1.7;
@@ -336,7 +338,7 @@ footer{
       <div class="hero-dot"></div>
       <span>Northrop Grumman Sponsored &nbsp;·&nbsp; UCF EEL 4914 &nbsp;·&nbsp; Group 12 &nbsp;·&nbsp; 2026–2027</span>
     </div>
-    <h1 class="d1">NG PULSE</h1>
+    <h1 class="d1 hero-title"><img src="nglogo.png" alt="NG">PULSE</h1>
     <p class="hero-sub">Rail-Signature Workload Integrity Monitor — a hardware security device that watches a processor's supply-rail current and flags when execution deviates from its expected behavioral fingerprint.</p>
     <div class="hero-band">
       <div class="hero-band-item">
